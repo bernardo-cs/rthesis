@@ -5,6 +5,7 @@
 library(stringr)
 library(Matrix)
 library(kohonen)
+library(session)
 # Load file from disk
 data.csv.tweets <- file.path('fixtures/50_mb_tweets/tweets_english.csv')
 data.csv.binmatrix <- file.path('fixtures/50_mb_tweets/bin_matrix.csv')
@@ -12,8 +13,10 @@ data.csv.binmatrix <- file.path('fixtures/50_mb_tweets/bin_matrix.csv')
 tweets <- read.csv(data.csv.tweets, header=FALSE, sep = ",", stringsAsFactors = FALSE)
 names(tweets) <- c('username','tweet text')
 
+tweets.bin.matrix.time <- proc.time()
 tweets.bin.matrix <- read.csv(data.csv.binmatrix, header=TRUE, sep = ",", stringsAsFactors = FALSE)
 tweets.bin.matrix <- as.matrix(tweets.bin.matrix)
+proc.time() - tweets.bin.matrix.time
 
 # Bin matrix must be square and have an adequate amount of words 
 if(nrow(tweets.bin.matrix) != ncol(tweets.bin.matrix)) message("bin matrix dimensions missmatch") 
@@ -57,11 +60,14 @@ df.iterator <- function(df){
 #tweets.binary.sparse <- as(tweets.binary.matrix, "Matrix")
 
 ## Run SOMS
-tweets.som1 <- som(data = tweets.bin.matrix, grid = somgrid(5, 5, "hexagonal"))
+tweets.bin.matrix.time <- proc.time()
+tweets.som1 <- som(data = tweets.bin.matrix, grid = somgrid(10, 10, "hexagonal"))
+tweets.bin.matrix.time <- proc.time()
+proc.time() - tweets.bin.matrix.time
 
 ## Plot SOMS
 pdf("50mb_6457tweets_dataset.pdf")
-par(mfrow = c(3,2))
+par(mfrow = c(1,2))
 plot(tweets.som1, type = "counts", main = "50mb/6457 Tweets: counts")
 plot(tweets.som1, type = "quality", main = "50mb/6457 Tweets: quality")
 dev.off()
