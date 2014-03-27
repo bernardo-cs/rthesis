@@ -58,17 +58,14 @@ df.iterator <- function(df){
 
 ## Run SOMS
 tweets.som1 <- som(data = tweets.bin.matrix, grid = somgrid(5, 5, "hexagonal"))
-tweets.som2 <- som(data = tweets.bin.matrix, grid = somgrid(5, 5, "hexagonal"))
-tweets.som3 <- som(data = tweets.bin.matrix, grid = somgrid(5, 5, "hexagonal"))
 
 ## Plot SOMS
 pdf("50mb_6457tweets_dataset.pdf")
 par(mfrow = c(3,2))
 plot(tweets.som1, type = "counts", main = "50mb/6457 Tweets: counts")
 plot(tweets.som1, type = "quality", main = "50mb/6457 Tweets: quality")
-plot(tweets.som2, type = "counts", main = "50mb/6457 Tweets: counts")
-plot(tweets.som2, type = "quality", main = "50mb/6457 Tweets: quality")
-plot(tweets.som3, type = "counts", main = "50mb/6457 Tweets: counts")
-plot(tweets.som3, type = "quality", main = "50mb/6457 Tweets: quality")
 dev.off()
 
+## Save session
+save.session('RSession.Rda')
+# restore.session('RSession.Rda')
